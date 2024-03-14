@@ -1,0 +1,113 @@
+C51 COMPILER V9.60.7.0   DS1302                                                            09/25/2023 10:54:31 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\Objects\ds1302.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ds1302.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ds
+                    -1302.lst) TABS(2) OBJECT(.\Objects\ds1302.obj)
+
+line level    source
+
+   1          #include<ds1302.h
+*** ERROR C321 IN LINE 1 OF ds1302.c: missing '>'
+   2          #include <intrins.h>
+   3          
+   4          void DS1302_WriteByte(unsigned char Data) 
+   5          { 
+   6   1          unsigned char i;
+   7   1          for(i=0; i<8;i++)
+   8   1          {
+   9   2          SDA=(Data&(0x01<<i));
+*** ERROR C202 IN LINE 9 OF ds1302.c: 'SDA': undefined identifier
+  10   2          SCL=1;
+*** ERROR C202 IN LINE 10 OF ds1302.c: 'SCL': undefined identifier
+  11   2          delay_us(50);
+  12   2          SCL=0;
+  13   2          delay_us(50);
+  14   2          } 
+  15   1      }
+  16          unsigned char DS1302_ReadByte(void) 
+  17          { 
+  18   1          unsigned char i,temp,Data=0;
+  19   1          SDA=1;
+  20   1        for(i=0; i<8; i++)
+  21   1          {
+  22   2          temp=SDA;
+  23   2           if(temp)
+  24   2          {
+  25   3                Data=Data|(0x01<<i);
+  26   3            }
+  27   2            SCL=1;
+  28   2          delay_us(50);
+  29   2          SCL=0;
+  30   2          delay_us(50);
+  31   2          }
+  32   1          Data = ((Data / 16) * 10 + Data % 16);    
+  33   1          return(Data); 
+  34   1      }   
+  35          void DS1302_Write(unsigned char Addr, unsigned char Data)
+  36          {
+  37   1          Data=(Data/10)*16|(Data%10);
+  38   1          CCS = 1;    
+  39   1          DS1302_WriteByte(Addr);      
+  40   1          DS1302_WriteByte(Data);
+  41   1          CCS = 0;
+  42   1      }  
+  43          unsigned char DS1302_Read(unsigned char Addr)
+  44          {
+  45   1          unsigned char Data;
+  46   1          CCS = 1;
+  47   1          DS1302_WriteByte(Addr);            
+  48   1          Data = DS1302_ReadByte();         
+  49   1          CCS = 0;
+  50   1          return(Data);
+  51   1      }
+C51 COMPILER V9.60.7.0   DS1302                                                            09/25/2023 10:54:31 PAGE 2   
+
+  52          void DS1302_SetTime(unsigned char hour,unsigned char minute,unsigned char second)
+  53          {
+  54   1        DS1302_Write(0x80,second);
+  55   1        DS1302_Write(0x82,minute);
+  56   1        DS1302_Write(0x84,hour);
+  57   1      }
+  58          void DS1302_SetDate(unsigned char day, unsigned char date, unsigned char month, unsigned char year)
+  59          {
+  60   1      
+  61   1        DS1302_Write(0x86,date);
+  62   1        DS1302_Write(0x88,month);
+  63   1        DS1302_Write(0x8A,day);
+  64   1        DS1302_Write(0x8C,year);
+  65   1      
+  66   1      }
+  67          void DS1302_GetTime(unsigned char *hour,unsigned char *minute,unsigned char *second)
+  68          {
+  69   1        *second=DS1302_Read(0x81);
+  70   1        *minute=DS1302_Read(0x83);
+  71   1        *hour=DS1302_Read(0x85);
+  72   1      }
+  73          void DS1302_GetDate(unsigned char *day, unsigned char *date, unsigned char *month, unsigned char *year)
+  74          {
+  75   1        *date=DS1302_Read(0x87);
+  76   1        *month=DS1302_Read(0x89);
+  77   1        *day=DS1302_Read(0x8B);
+  78   1        *year=DS1302_Read(0x8D);
+  79   1      }
+  80          void reset_3w() /* ----- reset and enable the 3-wire interface ------ */
+  81          {
+  82   1         SCL = 0;
+  83   1         CCS = 0;
+  84   1         CCS = 1;
+  85   1      }
+  86          void DS1302_Init()
+  87          {   unsigned char x;
+  88   1        CCS=0;
+  89   1        delay_us(2);
+  90   1        SCL=0;
+  91   1        DS1302_Write(0x8e,0);
+  92   1        DS1302_Write(0x90,0xa4);
+  93   1        x=DS1302_Read(0x81);
+  94   1        if((x & 0x80)!=0)
+  95   1         DS1302_Write(0x80,0);
+  96   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  3 ERROR(S)

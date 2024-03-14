@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              10/09/2023 09:49:52 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "dieukhien.h"
+   3          
+   4          unsigned char code disp[]={
+   5              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+   6              0x00,0xFE,0x03,0x01,0x01,0x03,0xFE,0x00,  //U
+   7              0x00,0x80,0x80,0xFF,0xFF,0x80,0x80,0x00,  //T
+   8              0x00,0x00,0xFF,0x91,0x91,0x91,0x00,0x00,  //E
+   9              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+  10          };
+  11          
+  12          void main()
+  13          {
+  14   1          unsigned char     i;
+  15   1          unsigned char     offset=0;
+  16   1          unsigned char     count=0;
+  17   1          
+  18   1          matrix_khoitao();
+  19   1          
+  20   1          while(1)
+  21   1          {
+  22   2              for(i=0;i<8;i++)
+  23   2              {    
+  24   3                  matrix_show(i,disp[i+offset]);    
+  25   3                  count++;
+  26   3                  if(count>20)
+  27   3                  {
+  28   4                      count = 0;
+  29   4                      offset++;
+  30   4                      if(offset>30)
+  31   4                          offset=0;                    
+  32   4                  }                
+  33   3              }    
+  34   2          }
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     62    ----
+   CONSTANT SIZE    =     40    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

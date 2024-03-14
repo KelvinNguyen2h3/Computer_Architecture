@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj" 
+TO ".\Objects\caculator" 
+PRINT(".\Listings\caculator.m51") RAMSIZE(256) 

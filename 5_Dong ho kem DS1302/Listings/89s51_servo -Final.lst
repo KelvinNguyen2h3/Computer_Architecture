@@ -1,0 +1,185 @@
+C51 COMPILER V9.60.7.0   89S51_SERVO__FINAL                                                10/01/2023 15:17:30 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE 89S51_SERVO__FINAL
+OBJECT MODULE PLACED IN .\Objects\89s51_servo -Final.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE 89s51_servo -Final.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
+                    -\Listings\89s51_servo -Final.lst) TABS(2) OBJECT(.\Objects\89s51_servo -Final.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <intrins.h>
+   3          
+   4          #define GPIO_DIG P0
+   5          
+   6          sbit K1 = P3^1;
+   7          sbit K2 = P3^0;
+   8          sbit K3 = P3^3;
+   9          sbit K4 = P3^2; 
+  10          
+  11          void delay(int t) {
+  12   1          int j, y;
+  13   1          for (j = 0; j <= t; j++) {
+  14   2              for (y = 0; y < 123; y++);
+  15   2          }
+  16   1      }
+  17          
+  18          char Num[] = {0xff, 0xfb, 0xf7, 0xf3, 0xef, 0xeb, 0xe7, 0xe3};
+  19          unsigned char Led[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
+  20          
+  21          void displayTime(unsigned char gio, unsigned char phut, unsigned char giay) {
+  22   1          unsigned char chuc, donvi;
+  23   1      
+  24   1        chuc = gio / 10;
+  25   1          donvi = gio % 10;
+  26   1          P0 = Led[chuc];
+  27   1          P2 = Num[0];
+  28   1          delay(1);
+  29   1          P0 = 0x00;
+  30   1      
+  31   1          P0 = Led[donvi];
+  32   1          P2 = Num[1];
+  33   1          delay(1);
+  34   1          P0 = 0x00;
+  35   1      
+  36   1          chuc = phut / 10;
+  37   1          donvi = phut % 10;
+  38   1          P0 = Led[chuc];
+  39   1          P2 = Num[3];
+  40   1          delay(1);
+  41   1          P0 = 0x00;
+  42   1      
+  43   1          P0 = Led[donvi];
+  44   1          P2 = Num[4];
+  45   1          delay(1);
+  46   1          P0 = 0x00;
+  47   1      
+  48   1          chuc = giay / 10;
+  49   1          donvi = giay % 10;
+  50   1          P0 = Led[chuc];
+  51   1          P2 = Num[6];
+  52   1          delay(1);
+  53   1          P0 = 0x00;
+  54   1      
+C51 COMPILER V9.60.7.0   89S51_SERVO__FINAL                                                10/01/2023 15:17:30 PAGE 2   
+
+  55   1          P0 = Led[donvi];
+  56   1          P2 = Num[7];
+  57   1          delay(1);
+  58   1          P0 = 0x00;
+  59   1      }
+  60          
+  61          void main() {
+  62   1          unsigned char gio = 10;
+  63   1          unsigned char phut = 0;
+  64   1          unsigned char giay = 0;
+  65   1          unsigned char ngay = 25;
+  66   1          unsigned char thang = 9;
+  67   1          unsigned int nam = 2023;
+  68   1          unsigned char ngan, tram, chuc, donvi;
+  69   1          int i, tictac;
+  70   1          bit isTimeDisplay = 1; 
+  71   1          tictac = 0;
+  72   1      
+  73   1          while (1) {
+  74   2              if (K4 == 0) {
+  75   3                  _nop_();
+  76   3                  if (K4 == 0) { 
+  77   4                      isTimeDisplay = !isTimeDisplay; 
+  78   4                      delay(200);  
+  79   4                  }
+  80   3              }
+  81   2      
+  82   2              if (isTimeDisplay) {
+  83   3                  displayTime(gio, phut, giay);
+  84   3              } else {
+  85   3                  
+  86   3                //ngay
+  87   3                  chuc = ngay / 10;
+  88   3                  donvi = ngay % 10;
+  89   3                  P0 = Led[chuc];
+  90   3                  P2 = Num[0];
+  91   3                  delay(1);
+  92   3                  P0 = 0x00;
+  93   3      
+  94   3                  P0 = Led[donvi];
+  95   3                  P2 = Num[1];
+  96   3                  delay(1);
+  97   3                  P0 = 0x00;
+  98   3      
+  99   3                //thang
+ 100   3                  chuc = thang / 10;
+ 101   3                  donvi = thang % 10;
+ 102   3                  P0 = Led[chuc];
+ 103   3                  P2 = Num[2];
+ 104   3                  delay(1);
+ 105   3                  P0 = 0x00;
+ 106   3      
+ 107   3                  P0 = Led[donvi];
+ 108   3                  P2 = Num[3];
+ 109   3                  delay(1);
+ 110   3                  P0 = 0x00;
+ 111   3                  
+ 112   3                //nam
+ 113   3                  ngan = nam / 1000;
+ 114   3                  tram = (nam%1000)/100;
+ 115   3                  chuc = (nam%100)/10;
+ 116   3                  donvi = (nam%10);
+C51 COMPILER V9.60.7.0   89S51_SERVO__FINAL                                                10/01/2023 15:17:30 PAGE 3   
+
+ 117   3                  
+ 118   3                  P0 = Led[ngan];
+ 119   3                  P2 = Num[4];
+ 120   3                  delay(1);
+ 121   3                  P0 = 0x00;
+ 122   3      
+ 123   3                  P0 = Led[tram];
+ 124   3                  P2 = Num[5];
+ 125   3                  delay(1);
+ 126   3                  P0 = 0x00;
+ 127   3                  
+ 128   3                  P0 = Led[chuc];
+ 129   3                  P2 = Num[6];
+ 130   3                  delay(1);
+ 131   3                  P0 = 0x00;
+ 132   3                  
+ 133   3                  P0 = Led[donvi];
+ 134   3                  P2 = Num[7];
+ 135   3                  delay(1);
+ 136   3                  P0 = 0x00;
+ 137   3              }
+ 138   2      
+ 139   2              tictac++;
+ 140   2              if (tictac == 80) {
+ 141   3                  tictac = 0;
+ 142   3                  giay++;
+ 143   3                  if (giay == 60) {
+ 144   4                      giay = 0;
+ 145   4                      phut++;
+ 146   4                      if (phut == 60) {
+ 147   5                          phut = 0;
+ 148   5                          gio++;
+ 149   5                          if (gio == 24) {
+ 150   6                              gio = 0;
+ 151   6                          }
+ 152   5                      }
+ 153   4                  }
+ 154   3              }
+ 155   2          }
+ 156   1      }
+*** WARNING C280 IN LINE 69 OF 89s51_servo -Final.c: 'i': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    543    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18      15
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

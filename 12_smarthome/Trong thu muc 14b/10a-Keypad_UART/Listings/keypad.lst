@@ -1,0 +1,13 @@
+C51 COMPILER V9.60.7.0   KEYPAD                                                            10/23/2023 09:44:04 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEYPAD
+OBJECT MODULE PLACED IN .\Objects\keypad.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\00-libfiles\keypad.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\00-libfiles) 
+                    -DEBUG OBJECTEXTEND PRINT(.\Listings\keypad.lst) TABS(2) OBJECT(.\Objects\keypad.obj)
+
+line level    source
+
+*** ERROR C318 OF ..\00-libfiles\keypad.c: can't open file '..\00-libfiles\keypad.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

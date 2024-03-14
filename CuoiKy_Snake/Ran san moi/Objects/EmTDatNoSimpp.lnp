@@ -1,0 +1,8 @@
+".\Objects\main.obj",
+".\Objects\Delay.obj",
+".\Objects\HC595.obj",
+".\Objects\MatrixKey.obj",
+".\Objects\Timer0.obj" 
+TO ".\Objects\EmTDatNoSimpp" 
+PRINT(".\Listings\EmTDatNoSimpp.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

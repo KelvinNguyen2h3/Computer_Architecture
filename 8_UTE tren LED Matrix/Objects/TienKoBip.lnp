@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\delay.obj",
+".\Objects\dieukhien.obj" 
+TO ".\Objects\TienKoBip" 
+PRINT(".\Listings\TienKoBip.m51") RAMSIZE(256) 

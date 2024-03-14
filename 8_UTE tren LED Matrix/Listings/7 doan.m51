@@ -1,0 +1,181 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    10/09/2023  08:27:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj, .\Objects\delay.obj TO .\Objects\7 doan PRINT (.\
+>> Listings\7 doan.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\main.obj (MAIN)
+  .\Objects\delay.obj (DELAY)
+
+
+LINK MAP OF MODULE:  .\Objects\7 doan (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     002DH     UNIT         ?PR?_HC74595_WRBYTE?MAIN
+            CODE    0030H     0022H     UNIT         ?PR?_MATRIXLED_SHOWCOL?MAIN
+            CODE    0052H     0020H     UNIT         ?PR?MAIN?MAIN
+            CODE    0072H     0014H     UNIT         ?PR?_DELAY100MS?DELAY
+            CODE    0086H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0092H     0008H     UNIT         ?CO?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\7 doan (?C_STARTUP)
+
+
+SEGMENT                               DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH
+---------------------------------------------------
+?C_C51STARTUP                       -----    -----
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN                       0008H    0001H
+  +--> ?CO?MAIN
+  +--> ?PR?_MATRIXLED_SHOWCOL?MAIN
+
+?PR?_MATRIXLED_SHOWCOL?MAIN         -----    -----
+  +--> ?PR?_HC74595_WRBYTE?MAIN
+  +--> ?PR?_DELAY100MS?DELAY
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\7 doan (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/09/2023  08:27:43  PAGE 2
+
+
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0086H         SEGMENT       ?C_C51STARTUP
+  I:0009H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0089H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0086H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0086H         LINE#         133
+  C:0088H         LINE#         134
+  C:0089H         LINE#         135
+  C:008AH         LINE#         136
+  C:008CH         LINE#         185
+  C:008FH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00B0H         PUBLIC        P3
+  C:0052H         PUBLIC        main
+  C:0092H         PUBLIC        disp
+  C:0030H         PUBLIC        _matrixled_showcol
+  C:0003H         PUBLIC        _hc74595_wrbyte
+  B:00B0H.5       PUBLIC        RCK
+  B:00B0H.6       PUBLIC        SCK
+  B:00B0H.4       PUBLIC        SER
+  -------         PROC          _HC74595_WRBYTE
+  D:0005H         SYMBOL        byte
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         14
+  C:0005H         LINE#         15
+  C:0005H         LINE#         17
+  C:0007H         LINE#         18
+  C:0007H         LINE#         19
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/09/2023  08:27:43  PAGE 3
+
+
+  C:0023H         LINE#         20
+  C:0025H         LINE#         21
+  C:0027H         LINE#         22
+  C:002BH         LINE#         23
+  C:002DH         LINE#         24
+  C:002FH         LINE#         25
+  -------         ENDPROC       _HC74595_WRBYTE
+  -------         PROC          _MATRIXLED_SHOWCOL
+  D:0002H         SYMBOL        column
+  D:0004H         SYMBOL        dat
+  C:0030H         LINE#         29
+  C:0032H         LINE#         30
+  C:0032H         LINE#         31
+  C:0037H         LINE#         32
+  C:0047H         LINE#         33
+  C:004EH         LINE#         34
+  C:0051H         LINE#         35
+  -------         ENDPROC       _MATRIXLED_SHOWCOL
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0052H         LINE#         37
+  C:0052H         LINE#         38
+  C:0052H         LINE#         40
+  C:0054H         LINE#         41
+  C:0056H         LINE#         42
+  C:0056H         LINE#         43
+  C:0056H         LINE#         44
+  C:0059H         LINE#         45
+  C:0059H         LINE#         46
+  C:0067H         LINE#         47
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0072H         PUBLIC        _delay100ms
+  -------         PROC          _DELAY100MS
+  D:0006H         SYMBOL        x
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:0072H         LINE#         4
+  C:0072H         LINE#         5
+  C:0072H         LINE#         7
+  C:007CH         LINE#         8
+  C:007CH         LINE#         9
+  C:007DH         LINE#         10
+  C:007FH         LINE#         11
+  C:0085H         LINE#         12
+  C:0085H         LINE#         13
+  -------         ENDPROC       _DELAY100MS
+  -------         ENDMOD        DELAY
+
+Program Size: data=10.0 xdata=0 code=154
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

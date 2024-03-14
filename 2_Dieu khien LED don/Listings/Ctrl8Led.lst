@@ -1,0 +1,122 @@
+C51 COMPILER V9.60.0.0   CTRL8LED                                                          08/28/2023 09:39:17 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE CTRL8LED
+OBJECT MODULE PLACED IN .\Objects\Ctrl8Led.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Ctrl8Led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -Ctrl8Led.lst) TABS(2) OBJECT(.\Objects\Ctrl8Led.obj)
+
+line level    source
+
+   1          #include<REGX52.h>
+   2          
+   3          void Delay(int t) {
+   4   1        while (t--);
+   5   1      }
+   6          
+   7          void Display() {
+   8   1        
+   9   1        //Sang dan
+  10   1        P2 = 0;
+  11   1        
+  12   1        P2_0 = 1;
+  13   1      
+  14   1        Delay(200000);
+  15   1        P2_1 = 1;
+  16   1      
+  17   1        Delay(200000);
+  18   1        P2_2 = 1;
+  19   1      
+  20   1        Delay(200000);
+  21   1        P2_3 = 1;
+  22   1      
+  23   1        Delay(200000);  
+  24   1        P2_4 = 1;
+  25   1      
+  26   1        Delay(200000);  
+  27   1        P2_5 = 1;
+  28   1      
+  29   1        Delay(200000);  
+  30   1        P2_6 = 1;
+  31   1      
+  32   1        Delay(200000);
+  33   1        P2_7 = 1;
+  34   1        
+  35   1        Delay(300000);
+  36   1        
+  37   1        // Tat dan
+  38   1        
+  39   1        P2_0 = 0;
+  40   1        Delay(200000);
+  41   1        
+  42   1        P2_1 = 0;
+  43   1        Delay(200000);
+  44   1        
+  45   1        P2_2 = 0;
+  46   1        Delay(200000);
+  47   1        
+  48   1        P2_3 = 0;
+  49   1        Delay(200000);
+  50   1        
+  51   1        P2_4 = 0;
+  52   1        Delay(200000);
+  53   1        
+  54   1        P2_5 = 0;
+C51 COMPILER V9.60.0.0   CTRL8LED                                                          08/28/2023 09:39:17 PAGE 2   
+
+  55   1        Delay(200000);
+  56   1        
+  57   1        P2_6 = 0;
+  58   1        Delay(200000);
+  59   1        
+  60   1        P2_7 = 0;
+  61   1        
+  62   1        Delay(300000);
+  63   1      
+  64   1      }
+  65          
+  66          void CtrlLed() {
+  67   1          P2 = 0;
+  68   1          if(P1_0 == 1){
+  69   2              P2_0 = 1;
+  70   2          }  if(P1_1 == 1){
+  71   2              P2_1 = 1;
+  72   2          }  if(P1_2 == 1){
+  73   2              P2_2 = 1;
+  74   2          }  if(P1_3 == 1){
+  75   2              P2_3 = 1;
+  76   2          }  if(P1_4 == 1){
+  77   2              P2_4 = 1;
+  78   2          }  if(P1_5 == 1){
+  79   2              P2_5 = 1;
+  80   2          }  if(P1_6 == 1){
+  81   2              P2_6 = 1;
+  82   2          }  if(P1_7 == 1){
+  83   2              P2_7 = 1;
+  84   2          }
+  85   1      }
+  86          
+  87          void main() {
+  88   1          if (P1_0 == 1 || P1_1 == 1 || P1_2 == 1 || P1_3 == 1 || P1_4 == 1 || P1_5 == 1 || P1_6 == 1 || P1_7 ==
+             - 1) {
+  89   2              CtrlLed();
+  90   2          } else {
+  91   2              Display();
+  92   2          }
+  93   1      }
+  94          
+  95          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    181    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

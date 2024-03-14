@@ -1,0 +1,140 @@
+C51 COMPILER V9.60.7.0   REMOTE                                                            10/16/2023 10:50:01 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE REMOTE
+OBJECT MODULE PLACED IN .\Objects\remote.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE remote.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\re
+                    -mote.lst) TABS(2) OBJECT(.\Objects\remote.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "timer0.h"
+   3          #include "exint0.h"
+   4          
+   5          unsigned int     IR_time;
+   6          unsigned char     IR_state;
+   7          unsigned char     IR_data[4];
+   8          unsigned char    IR_pdata;
+   9          
+  10          unsigned char     IR_dataflag;
+  11          unsigned char     IR_repeatflag;
+  12          unsigned char     IR_address;
+  13          unsigned char     IR_command;
+  14          
+  15          void IR_init(void)
+  16          {
+  17   1          exint0_init();
+  18   1          timer0_init();
+  19   1      }
+  20          
+  21          unsigned char IR_getdataflag(void)
+  22          {
+  23   1          if(IR_dataflag)
+  24   1          {
+  25   2              IR_dataflag=0;
+  26   2              return 1;
+  27   2          }
+  28   1          else
+  29   1              return 0;
+  30   1      }
+  31          
+  32          
+  33          unsigned char IR_getrepeatflag(void)
+  34          {
+  35   1          if(IR_repeatflag)
+  36   1          {
+  37   2              IR_repeatflag=0;
+  38   2              return 1;
+  39   2          }
+  40   1          else
+  41   1              return 0;
+  42   1      }
+  43          
+  44          unsigned char IR_getaddress(void)
+  45          {
+  46   1          return IR_address;
+  47   1      }
+  48          
+  49          
+  50          unsigned char IR_getcommand(void)
+  51          {
+  52   1          return IR_command;
+  53   1      }
+  54          
+C51 COMPILER V9.60.7.0   REMOTE                                                            10/16/2023 10:50:01 PAGE 2   
+
+  55          
+  56          void int0_routine(void) interrupt 0
+  57          {
+  58   1          if(IR_state==0)
+  59   1          {
+  60   2              timer0_SetCounter(0);
+  61   2              timer0_Run(1);
+  62   2              IR_state=1;
+  63   2          }
+  64   1          else if(IR_state==1)
+  65   1          {
+  66   2              IR_time=timer0_GetCounter();
+  67   2              timer0_SetCounter(0);
+  68   2              if(IR_time>12442-500 && IR_time<12442+500)
+  69   2              {
+  70   3                  IR_state=2;
+  71   3              }
+  72   2              else if(IR_time>10368-500 && IR_time<10368+500)
+  73   2              {
+  74   3                  IR_repeatflag=1;
+  75   3                  timer0_Run(0);
+  76   3                  IR_state=0;
+  77   3              }
+  78   2              else  IR_state=1;
+  79   2          }
+  80   1          else if(IR_state==2)
+  81   1          {
+  82   2              IR_time=timer0_GetCounter();
+  83   2              timer0_SetCounter(0);
+  84   2              if(IR_time>1032-500 && IR_time<1032+500)
+  85   2              {
+  86   3                  IR_data[IR_pdata/8] &= ~(0x01<<(IR_pdata%8));
+  87   3                  IR_pdata++;
+  88   3              }
+  89   2              else if(IR_time>2074-500 && IR_time<2074+500)
+  90   2              {
+  91   3                  IR_data[IR_pdata/8] |= (0x01<<(IR_pdata%8));
+  92   3                  IR_pdata++;
+  93   3              }
+  94   2          }
+  95   1          else
+  96   1          {
+  97   2              IR_pdata=0;
+  98   2              IR_state=1;
+  99   2          }
+ 100   1          if(IR_pdata>=32)
+ 101   1          {
+ 102   2              IR_pdata=0;
+ 103   2              if((IR_data[0]==~IR_data[1])&&(IR_data[2]==~IR_data[3]))    
+ 104   2              {
+ 105   3                  IR_address=IR_data[0];
+ 106   3                  IR_command=IR_data[2];
+ 107   3                  IR_dataflag=1;
+ 108   3              }
+ 109   2              timer0_Run(0);
+ 110   2              IR_state=0;
+ 111   2          }        
+ 112   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    374    ----
+C51 COMPILER V9.60.7.0   REMOTE                                                            10/16/2023 10:50:01 PAGE 3   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

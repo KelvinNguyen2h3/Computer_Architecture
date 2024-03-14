@@ -1,0 +1,153 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              11/20/2023 10:21:49 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <stdlib.h>
+   2          #include <REGX52.H>
+   3          #include "HC595.H"
+   4          #include "Delay.H"
+   5          #include "MatrixKey.H"
+   6          #include "Timer0.H"
+   7          unsigned char Dire,KeyNum,length,foodx,foody;
+   8          char Snakex[30]={0};
+   9          char Snakey[30]={0};
+  10          unsigned char code Coorx[]={0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};
+  11          unsigned char code Coory[]={0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};
+  12          void SnakeMove()
+  13          { unsigned char i;
+  14   1          for (i=length+1;i>0;i--)
+  15   1          {
+  16   2              Snakex[i]=Snakex[i-1];
+  17   2              Snakey[i]=Snakey[i-1];
+  18   2          } 
+  19   1        switch(Dire)
+  20   1        {
+  21   2          case 1:(Snakex[0])--;if((Snakex[0])<0){(Snakex[0])=7;}break;
+  22   2          case 2:(Snakex[0])++;(Snakex[0])%=8;break;
+  23   2          case 3:(Snakey[0])++;(Snakey[0])%=8;break;
+  24   2          case 4:(Snakey[0])--;if((Snakey[0])<0){(Snakey[0])=7;}break;
+  25   2        }
+  26   1      }
+  27          void Scan_Key()
+  28          {
+  29   1        if(KeyNum)
+  30   1        {
+  31   2          switch(KeyNum)
+  32   2          {
+  33   3            case 1:if(Dire!=3)Dire=4;break;
+  34   3            case 2:if(Dire!=4)Dire=3;break;
+  35   3            case 3:if(Dire!=2)Dire=1;break;
+  36   3            case 4:if(Dire!=1)Dire=2;break;
+  37   3          }
+  38   2        }
+  39   1      }
+  40          void food()
+  41          { 
+  42   1        foodx=(rand()+Snakex[length-1])%8;
+  43   1        foody=(rand()+Snakex[length-1])%8;
+  44   1      }
+  45          void vatcan(char m, char n){
+  46   1        MatrixLed(Coorx[m],Coory[n]);
+  47   1      }
+  48          void PlaySnakeAC()
+  49          {
+  50   1        unsigned char i;
+  51   1        for(i=0;i<length;i++)
+  52   1        {
+  53   2        MatrixLed(Coorx[Snakex[i]],Coory[Snakey[i]]);
+  54   2        MatrixLed(Coorx[foodx],Coory[foody]);
+C51 COMPILER V9.60.7.0   MAIN                                                              11/20/2023 10:21:49 PAGE 2   
+
+  55   2        }
+  56   1      }
+  57          void Snakedead(unsigned char a,unsigned char b,unsigned char c,unsigned char d,unsigned char e,unsigned ch
+             -ar f)
+  58          { unsigned char i;
+  59   1        for(i=3;i<length;i++)
+  60   1        {
+  61   2          if((Snakex[0]==Snakex[i] && Snakey[0]==Snakey[i]) || (Snakex[0]==a && Snakey[0]==b) || (Snakex[0]==c && 
+             -Snakey[0]==d) || (Snakex[0]==e && Snakey[0]==f))
+  62   2          {
+  63   3            P0=0xFF;
+  64   3            while(1);   
+  65   3          }
+  66   2        }
+  67   1      }
+  68          void Play_Game(unsigned char a,unsigned char b,unsigned char c,unsigned char d,unsigned char e,unsigned ch
+             -ar f)
+  69          { unsigned char i;
+  70   1        Scan_Key();
+  71   1        PlaySnakeAC();
+  72   1        Snakedead(a,b,c,d,e,f);
+  73   1        for(i=0;i<length;i++)
+  74   1        { 
+  75   2          if(foodx==Snakex[i] && foody==Snakey[i])
+  76   2          {
+  77   3            length++;
+  78   3            food();
+  79   3          }
+  80   2        }
+  81   1      }
+  82          void main()
+  83          { 
+  84   1        unsigned char a,b,c,d,e,f;
+  85   1        Timer0_Init();
+  86   1        length=1;
+  87   1        Dire=3;
+  88   1        a = 2;
+  89   1        b = 2;
+  90   1        c = 2;
+  91   1        d = 3;
+  92   1        e = 3;
+  93   1        f = 2;
+  94   1        while(1)
+  95   1        { rand();
+  96   2          KeyNum=Key();
+  97   2          Play_Game(a,b,c,d,e,f);
+  98   2          vatcan(a, b);
+  99   2          vatcan(c, d);
+ 100   2          vatcan(e, f);
+ 101   2        }
+ 102   1      }
+ 103          
+ 104          void Routine_Timer0()interrupt 1
+ 105          {
+ 106   1        static unsigned char T0Count1,T0Count2;
+ 107   1        TL0 = 0xCD;   
+ 108   1        TH0 = 0xD4;     
+ 109   1        T0Count1++;
+ 110   1        if(T0Count1>=15)
+ 111   1        {
+ 112   2          T0Count1=0;
+ 113   2          Loop_MatrixKey();
+C51 COMPILER V9.60.7.0   MAIN                                                              11/20/2023 10:21:49 PAGE 3   
+
+ 114   2        }
+ 115   1        T0Count2++;
+ 116   1        if(T0Count2>30)
+ 117   1        { 
+ 118   2          T0Count2=0;
+ 119   2          SnakeMove();
+ 120   2        }
+ 121   1      
+ 122   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    657    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     67      20
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

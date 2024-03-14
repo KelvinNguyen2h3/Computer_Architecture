@@ -1,0 +1,35 @@
+#include <REGX52.H>
+#include "dieukhien.h"
+
+unsigned char code disp[]={
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+    0x00,0xFE,0x03,0x01,0x01,0x03,0xFE,0x00,  //U
+	  0x00,0x80,0x80,0xFF,0xFF,0x80,0x80,0x00,  //T
+	  0x00,0x00,0xFF,0x91,0x91,0x91,0x00,0x00,  //E
+	  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+};
+
+void main()
+{
+    unsigned char     i;
+    unsigned char     offset=0;
+    unsigned char     count=0;
+    
+    matrix_khoitao();
+    
+    while(1)
+    {
+        for(i=0;i<8;i++)
+        {    
+            matrix_show(i,disp[i+offset]);    
+            count++;
+            if(count>20)
+            {
+                count = 0;
+                offset++;
+                if(offset>30)
+                    offset=0;                    
+            }                
+        }    
+    }
+}

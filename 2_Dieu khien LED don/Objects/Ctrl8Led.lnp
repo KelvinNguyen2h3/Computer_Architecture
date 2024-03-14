@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\Ctrl8Led.obj" 
+TO ".\Objects\Ctrl8Led" 
+PRINT(".\Listings\Ctrl8Led.m51") RAMSIZE(256) 

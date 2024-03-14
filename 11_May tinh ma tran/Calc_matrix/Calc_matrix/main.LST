@@ -1,0 +1,182 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              11/06/2023 08:24:50 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<main.h>
+   2          unsigned char key=0;
+   3          void Send_data_cot(unsigned char _data);
+   4          sbit SH_CP=P3^6;  //dinh nghia chan SH_CP o P0^0
+   5          sbit DS=P3^4;     //dinh nghia chan DS o P0^1
+   6          sbit ST_CP=P3^5;  //dinh nghia chan ST_CP o P0^2
+   7          //============================khai bao bien va hang==========================//
+   8          unsigned char a[80]= {0xFF,0x81,0xBD,0x81,
+   9                                0xFF,0xBF,0x81,0xBD,
+  10                                0xFF,0xB1,0xB5,0x85,
+  11                                0xFF,0x81,0xB5,0xB5,
+  12                                0xFF,0x81,0xF7,0xF1,
+  13                                0xFF,0x85,0xB5,0xB1,
+  14                                0xFF,0x85,0xB5,0x81,
+  15                                0xFF,0x81,0xFD,0xFD,
+  16                                0xFF,0x81,0xB5,0x81,
+  17                                0xFF,0x81,0xB5,0xB1};
+  18          unsigned char b[8]= {0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};//ma quét COT : C1 den C8, COT nao o gia tri
+             - =1 thì COT dó duoc sáng.
+  19          unsigned char i=0;
+  20          int num = 0;
+  21          int num1 = 0;
+  22          int cong,tru;
+  23          int chuc,donvi;
+  24          int main() 
+  25          {
+  26   1          Keypad_Init();
+  27   1          while(1)
+  28   1          {
+  29   2              key = KEY4X4_GetKey();//nhan thu tu phím nhan
+  30   2              if (key!=0)//phat hien co phim nhan
+  31   2              {
+  32   3                switch (key)
+  33   3                {
+  34   4                  case '0':
+  35   4                    num = num*10 + 0;
+  36   4                    break;
+  37   4      
+  38   4                  case '1':
+  39   4                    num = num*10 + 1;             
+  40   4                    break;
+  41   4      
+  42   4                  case '2':
+  43   4                    num = num*10 + 2;
+  44   4                    break;
+  45   4      
+  46   4                  case '3':
+  47   4                    num = num*10 + 3;
+  48   4                    break;
+  49   4      
+  50   4                  case '4':
+  51   4                    num = num*10 + 4;
+  52   4                    break;
+  53   4      
+  54   4                  case '5':
+C51 COMPILER V9.60.7.0   MAIN                                                              11/06/2023 08:24:50 PAGE 2   
+
+  55   4                    num = num*10 + 5;
+  56   4                    break;
+  57   4          
+  58   4                  case '6':
+  59   4                    num = num*10 + 6;
+  60   4                    break;
+  61   4      
+  62   4                  case '7':
+  63   4                    num = num*10 + 7;
+  64   4                    break;
+  65   4          
+  66   4                  case '8':
+  67   4                    num = num*10 + 8;
+  68   4                    break;
+  69   4      
+  70   4                  case '9':
+  71   4                    num = num*10 + 9;
+  72   4                    break;
+  73   4                  
+  74   4                  case '+':
+  75   4                    num1 = num;
+  76   4                    num = 0;
+  77   4                    cong = 1;
+  78   4                    break;
+  79   4      
+  80   4                  case '-':
+  81   4                    num1 = num;
+  82   4                    num = 0;
+  83   4                    tru = 1;
+  84   4                    break;
+  85   4      
+  86   4                  case '=':
+  87   4                    if (tru == 1) 
+  88   4                      {
+  89   5                        num = num1 - num;
+  90   5                        tru = 0;
+  91   5                      }
+  92   4                    if (cong == 1) 
+  93   4                      {
+  94   5                        num = num1 + num;
+  95   5                        cong = 0;
+  96   5                      }
+  97   4                    break;
+  98   4      
+  99   4                  default:
+ 100   4                    break;
+ 101   4                }
+ 102   3                key = 0;
+ 103   3                delay_ms(100);
+ 104   3              }
+ 105   2              while (num > 99) {
+ 106   3                  num = num/10;
+ 107   3              }         
+ 108   2              chuc = num/10;
+ 109   2              donvi = num%10;
+ 110   2              for(i=0;i<4;i++)//quet COT thu 1 den thu 8, cho COT=1 roi goi du lieu ra cot do
+ 111   2                {
+ 112   3                  P0=a[i + donvi*4];              // goi du lieu tai vi tri o ma tran a[] ra hang 1->8
+ 113   3                  Send_data_cot(b[i]);  // goi ma quet ma tran b[] ra COT 1->8
+ 114   3                  delay_ms(1);          // thoi gian quet led
+ 115   3                  Send_data_cot(0x00);  // ma quet=0=>tat het LED chong lem
+ 116   3                }
+C51 COMPILER V9.60.7.0   MAIN                                                              11/06/2023 08:24:50 PAGE 3   
+
+ 117   2              for(i=4;i<8;i++)//quet COT thu 1 den thu 8, cho COT=1 roi goi du lieu ra cot do
+ 118   2                {
+ 119   3                  P0=a[i - 4 + chuc*4];             // goi du lieu tai vi tri o ma tran a[] ra hang 1->8
+ 120   3                  Send_data_cot(b[i]);  // goi ma quet ma tran b[] ra COT 1->8
+ 121   3                  delay_ms(1);          // thoi gian quet led
+ 122   3                  Send_data_cot(0x00);  // ma quet=0=>tat het LED chong lem
+ 123   3                }
+ 124   2          }
+ 125   1      }
+ 126          
+ 127          void Send_data_cot(unsigned char _data)
+ 128          {
+ 129   1      unsigned char n,tam;
+ 130   1       
+ 131   1               ST_CP=0;//cho chan ST cua 74HC595 xuong muc 0
+ 132   1               SH_CP=0;//cho chan SH cua 74HC595 xuong muc 0
+ 133   1               DS=0;  //cho chan DS cua 74HC595 xuong muc 0
+ 134   1         for(n=0;n<8;n++)//goi 8 bit lan luoc ra 8 cot
+ 135   1         {
+ 136   2              tam=_data&0x80;
+ 137   2             _data = _data<<1;//dich trai 1 bit de goi bit can goi ra cot      
+ 138   2            
+ 139   2            if(tam==0x80)//goi bit cao ra truoc (bit o cot thu 8 truoc)
+ 140   2            {
+ 141   3              DS=1;// cho LED sang COT =1
+ 142   3            }
+ 143   2            else                                 
+ 144   2            {
+ 145   3              DS=0;//cho LED tat COT =0
+ 146   3            }
+ 147   2            //tao xung dich du lieu   
+ 148   2            SH_CP=1;
+ 149   2            SH_CP=0;  
+ 150   2         }
+ 151   1          //tao xung chot du lieu
+ 152   1            ST_CP=1;
+ 153   1            ST_CP=0;  
+ 154   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    513    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =    102    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

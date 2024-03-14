@@ -1,0 +1,86 @@
+C51 COMPILER V9.60.7.0   MATRIX                                                            10/30/2023 10:31:34 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MATRIX
+OBJECT MODULE PLACED IN matrix.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE matrix.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<matrix.h>
+   2          void Send_data_cot(unsigned char _data);
+   3          sbit SH_CP=P3^6;  //dinh nghia chan SH_CP o P0^0
+   4          sbit DS=P3^4;     //dinh nghia chan DS o P0^1
+   5          sbit ST_CP=P3^5;  //dinh nghia chan ST_CP o P0^2
+   6          //============================khai bao bien va hang==========================//
+   7          unsigned char a[80]= {0xFF,0xFF,0xFF,0xFF,0xFF,0xC3,0xBD,0xC3,
+   8                                0xFF,0xFF,0xFF,0xFF,0xFF,0xBB,0x81,0xBF,
+   9                                0xFF,0xFF,0xFF,0xFF,0xFF,0x9B,0xAD,0xB3,
+  10                                0xFF,0xFF,0xFF,0xFF,0xFF,0xBD,0xB5,0xCB,
+  11                                0xFF,0xFF,0xFF,0xFF,0xFF,0xF1,0xF7,0x81,
+  12                                0xFF,0xFF,0xFF,0xFF,0xFF,0xB1,0xB5,0x85,
+  13                                0xFF,0xFF,0xFF,0xFF,0xFF,0x81,0xB5,0x85,
+  14                                0xFF,0xFF,0xFF,0xFF,0xFF,0xFD,0xFD,0x81,
+  15                                0xFF,0xFF,0xFF,0xFF,0xFF,0x81,0xB5,0x81,
+  16                                0xFF,0xFF,0xFF,0xFF,0xFF,0xB1,0xB5,0x81};
+  17          unsigned char b[8]= {0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};//ma quét COT : C1 den C8, COT nao o gia tri
+             - =1 thì COT dó duoc sáng.
+  18          unsigned char i=0;
+  19          //============================HAM MAIN=======================================//
+  20          void matrix_dis(unsigned int so)
+  21            {
+  22   1            while(1)
+  23   1              {
+  24   2                   for(i=0;i<8;i++)//quet COT thu 1 den thu 8, cho COT=1 roi goi du lieu ra cot do
+  25   2                      {
+  26   3                        P0=a[i + so*8];             // goi du lieu tai vi tri o ma tran a[] ra hang 1->8
+  27   3                        Send_data_cot(b[i]);  // goi ma quet ma tran b[] ra COT 1->8
+  28   3                        delay_ms(1);          // thoi gian quet led
+  29   3                        Send_data_cot(0x00);  // ma quet=0=>tat het LED chong lem
+  30   3                     }
+  31   2              }
+  32   1        }
+  33          void Send_data_cot(unsigned char _data)
+  34          {
+  35   1      unsigned char n,tam;
+  36   1       
+  37   1               ST_CP=0;//cho chan ST cua 74HC595 xuong muc 0
+  38   1               SH_CP=0;//cho chan SH cua 74HC595 xuong muc 0
+  39   1               DS=0;  //cho chan DS cua 74HC595 xuong muc 0
+  40   1         for(n=0;n<8;n++)//goi 8 bit lan luoc ra 8 cot
+  41   1         {
+  42   2              tam=_data&0x80;
+  43   2             _data = _data<<1;//dich trai 1 bit de goi bit can goi ra cot      
+  44   2            
+  45   2            if(tam==0x80)//goi bit cao ra truoc (bit o cot thu 8 truoc)
+  46   2            {
+  47   3              DS=1;// cho LED sang COT =1
+  48   3            }
+  49   2            else                                 
+  50   2            {
+  51   3              DS=0;//cho LED tat COT =0
+  52   3            }
+  53   2            //tao xung dich du lieu   
+  54   2            SH_CP=1;
+C51 COMPILER V9.60.7.0   MATRIX                                                            10/30/2023 10:31:34 PAGE 2   
+
+  55   2            SH_CP=0;  
+  56   2         }
+  57   1          //tao xung chot du lieu
+  58   1            ST_CP=1;
+  59   1            ST_CP=0;  
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     92    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     89       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

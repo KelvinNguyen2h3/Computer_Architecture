@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\7cho.obj" 
+TO ".\Objects\7 doan" 
+PRINT(".\Listings\7 doan.m51") RAMSIZE(256) 

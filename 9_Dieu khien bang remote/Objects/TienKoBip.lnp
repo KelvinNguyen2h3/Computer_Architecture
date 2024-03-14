@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\exint0.obj",
+".\Objects\timer0.obj",
+".\Objects\remote.obj" 
+TO ".\Objects\TienKoBip" 
+PRINT(".\Listings\TienKoBip.m51") RAMSIZE(256) 
