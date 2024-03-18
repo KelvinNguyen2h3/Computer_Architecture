@@ -1,3 +1,4 @@
+STC89C52 (8051)
 1. LED gradually lights up, gradually lights down
 2. Single LED control
 3. 7-segment LED counts up and down
