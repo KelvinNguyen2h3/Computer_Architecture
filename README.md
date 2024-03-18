@@ -9,5 +9,5 @@ STC89C52 (8051)
 10. Calculator (with 7-segment LED)
 11. Calculator with Matrix LED
 12. Smarthome
-Final. Snake Game.
-Tool to get code onto the microcontroller
+13. Final: Snake Game
+14. Tool to get code onto the microcontroller
